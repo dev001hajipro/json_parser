@@ -35,7 +35,9 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.LBRACKET, l.ch)
 	case ']':
 		tok = newToken(token.RBRACKET, l.ch)
-
+	case '0':
+		tok.Type = token.EOF
+		tok.Literal = ""
 	case '"':
 		tok.Type = token.STRING
 		tok.Literal = l.readString()
@@ -80,7 +82,7 @@ func newToken(t token.TokenType, b byte) token.Token {
 
 func (l *Lexer) readChar() {
 	if l.readPosition >= len(l.input) {
-		l.ch = 0
+		l.ch = 0 // for EOF.
 	} else {
 		l.ch = l.input[l.readPosition]
 	}

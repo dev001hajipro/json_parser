@@ -15,6 +15,7 @@ const (
 	NUMBER   = "NUMBER"
 	TRUE     = "TRUE"
 	FALSE    = "FALSE"
+	NULL	 = "NULL"
 )
 
 type TokenType string
@@ -26,6 +27,7 @@ type Token struct {
 var keywords = map[string]TokenType{
 	"true":  TRUE,
 	"false": FALSE,
+	"null": NULL,
 }
 
 func LookupIndent(s string) TokenType {

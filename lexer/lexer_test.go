@@ -95,7 +95,7 @@ func TestNextToken3(t *testing.T) {
 
 
 func TestNextToken4(t *testing.T) {
-	input := `{"foo": true}{"bar": false}`
+	input := `{"foo": true}{"bar": false}{"abc":null}`
 
 	tests := []struct {
 		expectedType    token.TokenType
@@ -106,10 +106,17 @@ func TestNextToken4(t *testing.T) {
 		{token.COLON, ":"},
 		{token.TRUE, "true"},
 		{token.RBRACE, "}"},
+
 		{token.LBRACE, "{"},
 		{token.STRING, "bar"},
 		{token.COLON, ":"},
 		{token.FALSE, "false"},
+		{token.RBRACE, "}"},
+
+		{token.LBRACE, "{"},
+		{token.STRING, "abc"},
+		{token.COLON, ":"},
+		{token.NULL, "null"},
 		{token.RBRACE, "}"},
 	}
 

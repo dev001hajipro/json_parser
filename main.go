@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+
+	"github.com/dev001hajipro/json_parser/repl"
 )
 
 func main() {
@@ -13,6 +15,6 @@ func main() {
 	}
 
 	fmt.Printf("Hi %s!", user.Username)
-	
+
 	repl.Start(os.Stdin, os.Stdout)
 }

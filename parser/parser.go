@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/dev001hajipro/json_parser/lexer"
 	"github.com/dev001hajipro/json_parser/token"
@@ -36,19 +37,36 @@ func (p *Parser) nextToken() {
 	p.peekToken = p.l.NextToken() // read next token.
 }
 
-func (p *Parser) Parse() {
+func (p *Parser) Parse() any {
 	for p.curToken.Type != token.EOF {
 		switch p.curToken.Type {
 		case token.LBRACKET:
 			println("lbracket")
-			p.ParseArray(token.RBRACKET)
+			return p.ParseArray(token.RBRACKET)
 		case token.LBRACE:
 			println("lbrace")
+		case token.STRING:
+		case token.NUMBER:
+			var err error
+			i, err := strconv.ParseInt(p.curToken.Literal, 10, 0)
+			if err  == nil {
+				return i;
+			}
+
+			var f float64
+			f, err = strconv.ParseFloat(p.curToken.Literal, 64)
+			if err  != nil {
+				return err;
+			}
+			return f
+			
 		default:
 		}
 
 		p.nextToken()
 	}
+
+	return nil
 }
 
 func (p *Parser) ParseArray(end token.TokenType) []any {
@@ -67,9 +85,11 @@ func (p *Parser) ParseArray(end token.TokenType) []any {
 	for p.peekTokenIs(token.COMMA) {
 		p.nextToken() // skip comma
 		p.nextToken() // cursor position set to target element.
-	//	list = append(list, p.parseExpression(LOWEST))
+		
+		list = append(list, p.Parse())
 	}
 
+	// read ]
 	if !p.expectPeek(end) {
 		return nil
 	}

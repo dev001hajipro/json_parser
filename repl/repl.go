@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"log"
 
 	"github.com/dev001hajipro/json_parser/lexer"
 	"github.com/dev001hajipro/json_parser/token"
@@ -24,8 +25,15 @@ func Start(in io.Reader, out io.Writer) {
 		
 		for {
 			tok := l.NextToken()
-			if tok.Type == token.EOF {
+			fmt.Printf("%v\n", tok)
+			if tok.Type == token.EOF  {
 				break;
+			}
+			if tok.Type == token.RBRACE {
+				break;
+			}
+			if tok.Type == token.ILLEGAL {
+				log.Fatalf("token error: %v\n", tok)
 			}
 		}
 	}

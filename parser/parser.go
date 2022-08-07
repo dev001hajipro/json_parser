@@ -38,6 +38,7 @@ func (p *Parser) nextToken() {
 }
 
 func (p *Parser) Parse() any {
+	println("p.curToken.Literal= " + p.curToken.Literal)
 	for p.curToken.Type != token.EOF {
 		switch p.curToken.Type {
 		case token.LBRACKET:
@@ -46,6 +47,9 @@ func (p *Parser) Parse() any {
 		case token.LBRACE:
 			println("lbrace")
 		case token.STRING:
+			println("string:")
+			println(p.curToken.Literal)
+			return p.curToken.Literal
 		case token.NUMBER:
 			var err error
 			i, err := strconv.ParseInt(p.curToken.Literal, 10, 0)
@@ -80,7 +84,7 @@ func (p *Parser) ParseArray(end token.TokenType) []any {
 
 	// read first element.
 	p.nextToken()
-	//list = append(list, p.parseExpression(LOWEST))
+	list = append(list, p.Parse())
 
 	for p.peekTokenIs(token.COMMA) {
 		p.nextToken() // skip comma

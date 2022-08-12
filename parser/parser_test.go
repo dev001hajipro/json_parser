@@ -19,6 +19,13 @@ func TestParse(t *testing.T) {
 	lls1 := ls[3].([]any)
 	t.Logf("type=%T. value=%v\n", lls1[0], lls1[0])
 	t.Logf("type=%T. value=%v\n", lls1[1], lls1[1])
-	
+}
 
+func TestParseObject(t *testing.T) {
+	
+	l := lexer.New(`{"hello":"world}`)
+	p := New(l)
+	json := p.Parse()
+	ls := json.(map[any]any)
+	t.Logf("type=%T. \n", ls)
 }

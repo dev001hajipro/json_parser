@@ -46,6 +46,7 @@ func (p *Parser) Parse() any {
 			return p.ParseArray(token.RBRACKET)
 		case token.LBRACE:
 			println("lbrace")
+			return p.ParseObject(token.RBRACE)
 		case token.STRING:
 			println("string:")
 			println(p.curToken.Literal)
@@ -98,6 +99,35 @@ func (p *Parser) ParseArray(end token.TokenType) []any {
 		return nil
 	}
 	return list
+}
+
+func (p *Parser) ParseObject(end token.TokenType) map[any]any {
+	var kv = make(map[any]any)
+
+	for !p.peekTokenIs(token.RBRACE) {
+		p.nextToken()
+		key := p.Parse()
+
+		if !p.expectPeek(token.COLON) {
+			return nil
+		}
+
+		p.nextToken() // skip colon
+
+		value := p.Parse()
+
+		kv[key] = value
+
+		if !p.peekTokenIs(end) && !p.expectPeek(token.COMMA) {
+			return nil
+		}
+	}
+
+	if !p.expectPeek(end) {
+		return nil
+	}
+
+	return kv
 }
 
 func (p *Parser)peekTokenIs(t token.TokenType) bool {

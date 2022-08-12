@@ -38,18 +38,13 @@ func (p *Parser) nextToken() {
 }
 
 func (p *Parser) Parse() any {
-	println("p.curToken.Literal= " + p.curToken.Literal)
 	for p.curToken.Type != token.EOF {
 		switch p.curToken.Type {
 		case token.LBRACKET:
-			println("lbracket")
 			return p.ParseArray(token.RBRACKET)
 		case token.LBRACE:
-			println("lbrace")
 			return p.ParseObject(token.RBRACE)
 		case token.STRING:
-			println("string:")
-			println(p.curToken.Literal)
 			return p.curToken.Literal
 		case token.NUMBER:
 			var err error
@@ -70,7 +65,6 @@ func (p *Parser) Parse() any {
 
 		p.nextToken()
 	}
-
 	return nil
 }
 
